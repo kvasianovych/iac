@@ -1,2 +1,2 @@
-# iac
+# IaC
 Infrastructure as Code
