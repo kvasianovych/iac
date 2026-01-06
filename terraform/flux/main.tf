@@ -1,6 +1,9 @@
 locals {
-  cluster_endpoint = ""
+  cluster_endpoint = var.cluster_endpoint
+  cluster_ca       = data.terraform_remote_state.auth.outputs.cluster_ca
+  cluster_token    = data.terraform_remote_state.auth.outputs.cluster_token
 }
+
 module "tls_private_key" {
   source = "github.com/kvasianovych/tf-hashicorp-tls-keys"
 }
@@ -15,11 +18,11 @@ module "github_repository" {
   public_key_openssh_title = var.public_key_openssh_title
 }
 
-module "kind_cluster" {
-  source = "github.com/kvasianovych/tf-kind-cluster"
-
-  cluster_name = var.kind_cluster_name
-}
+# module "kind_cluster" {
+#   source = "github.com/kvasianovych/tf-kind-cluster"
+# 
+#   cluster_name = var.kind_cluster_name
+# }
 
 module "flux_bootstrap" {
   source = "github.com/kvasianovych/tf-fluxcd-flux-bootstrap"
@@ -27,8 +30,18 @@ module "flux_bootstrap" {
   github_token      = var.github_token
   github_repository = "${var.github_owner}/${var.flux_github_repo}"
   private_key       = module.tls_private_key.private_key_pem
-  config_host       = module.kind_cluster.endpoint
-  config_ca         = module.kind_cluster.ca
-  config_client_key = module.kind_cluster.client_key
-  config_crt        = module.kind_cluster.crt
+  config_host       = local.cluster_endpoint
+  config_ca         = local.cluster_ca
+  config_token      = local.cluster_token
 }
+
+# module "gke_workload_identity" {
+#   source  = "terraform-google-modules/kubernetes-engine/google//modules/workload-identity"
+#   version = "43.0.0"
+# 
+#   cluster_name        = var.k8s_cluster
+#   name                = "kustomize-controller"
+#   namespace           = var.flux_github_repo
+#   project_id          = var.google_project
+#   use_existing_k8s_sa = true
+# }
