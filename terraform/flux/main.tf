@@ -1,3 +1,6 @@
+locals {
+  cluster_endpoint = ""
+}
 module "tls_private_key" {
   source = "github.com/kvasianovych/tf-hashicorp-tls-keys"
 }
