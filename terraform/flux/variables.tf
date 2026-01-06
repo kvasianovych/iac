@@ -48,3 +48,27 @@ variable "k8s_cluster" {
     error_message = "The k8s_cluster value must be either 'kind' or 'gke'."
   }
 }
+
+variable "cluster_endpoint" {
+  type        = string
+  description = "K8S cluster endpoint."
+  default     = ""
+}
+
+variable "cluster_ca" {
+  type        = string
+  description = "K8S cluster CA."
+  default     = ""
+}
+
+variable "cluster_client_key" {
+  type        = string
+  description = "K8S cluster client key."
+  default     = ""
+}
+
+variable "cluster_crt" {
+  type        = string
+  description = "K8S cluster certificate."
+  default     = ""
+}
