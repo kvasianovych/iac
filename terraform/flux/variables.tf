@@ -39,12 +39,12 @@ variable "kind_cluster_name" {
   default     = ""
 }
 
-variable "k8s_cluster" {
+variable "k8s_cluster_name" {
   type        = string
   description = "Kubernetes cluster type"
 
   validation {
-    condition     = contains(["kind", "gke"], var.k8s_cluster)
+    condition     = contains(["kind", "gke", "flux"], var.k8s_cluster_name)
     error_message = "The k8s_cluster value must be either 'kind' or 'gke'."
   }
 }
