@@ -36,4 +36,15 @@ variable "fluxcd_target_path" {
 variable "kind_cluster_name" {
   type        = string
   description = "Kind cluster name."
+  default     = ""
+}
+
+variable "k8s_cluster" {
+  type        = string
+  description = "Kubernetes cluster type"
+
+  validation {
+    condition     = contains(["kind", "gke"], var.k8s_cluster)
+    error_message = "The k8s_cluster value must be either 'kind' or 'gke'."
+  }
 }
