@@ -10,6 +10,7 @@ module "gke_cluster" {
 
   GOOGLE_REGION    = var.GOOGLE_REGION
   GOOGLE_PROJECT   = var.GOOGLE_PROJECT
+  GKE_MACHINE_TYPE = "e2-medium"
   GKE_NUM_NODES    = 2
   GKE_CLUSTER_NAME = "flux"
   GKE_POOL_NAME    = "flux"
